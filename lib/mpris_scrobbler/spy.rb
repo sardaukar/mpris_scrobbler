@@ -21,7 +21,13 @@ module MprisScrobbler
       init_rockstar
       ask_auth unless session_key
 
-      @interface = get_dbus_interface
+      begin
+        @interface = get_dbus_interface
+      rescue DBus::Error
+        puts "error querying DBus, make sure your music player is running!"
+        exit 1
+      end
+
       @queue = []
     end
 
